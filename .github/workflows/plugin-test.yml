@@ -10,6 +10,9 @@ on:
       version:
         type: string
         default: dev-master
+      module:
+        type: string
+        default: dev-master
       mysql:
         type: string
         default: 8.0.21
@@ -52,7 +55,7 @@ jobs:
         working-directory: blog
       - name: Update package
         working-directory: blog
-        run: composer require juzaweb/modules:dev-master juzaweb/dev-tool:dev-master
+        run: composer require juzaweb/modules:${{ inputs.module }} juzaweb/dev-tool:dev-master
       - name: Install Example plugin for Testing
         working-directory: blog
         run: composer require juzaweb/example:dev-master
