@@ -2,10 +2,10 @@ name: Run phpunit test suite - Mysql
 
 on:
   workflow_call:
-    inputs:
-      version:
-        default: [dev-develop]
-        type: array
+#    inputs:
+#      version:
+#        default: [dev-develop]
+#        type: array
 
 jobs:
   laravel-tests:
@@ -26,7 +26,7 @@ jobs:
       matrix:
         os: [ubuntu-latest]
         php: [8.0, 8.1]
-        version: ${{ inputs.version }}
+        version: [dev-develop]
     name: PHP${{ matrix.php }} - ${{ matrix.os }}
 
     steps:
