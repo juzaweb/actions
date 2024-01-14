@@ -4,6 +4,9 @@ on:
     inputs:
       plugin:
         type: string
+      vendor:
+        type: string
+        default: juzaweb
       cms:
         type: string
         default: dev-develop
@@ -59,7 +62,7 @@ jobs:
         working-directory: blog
         run: composer require juzaweb/example:dev-master
       - name: Install plugin
-        run: composer require ${{ inputs.plugin }}:${{ inputs.version }}
+        run: composer require ${{ inputs.vendor }}/${{ inputs.plugin }}:${{ inputs.version }}
         working-directory: blog
       - name: Config database & Execute tests Install
         run: |
@@ -67,7 +70,7 @@ jobs:
           composer dump-autoload
         working-directory: blog
       - name: Active plugin
-        run: php artisan plugin:enable ${{ inputs.plugin }}
+        run: php artisan plugin:enable ${{ inputs.vendor }}/${{ inputs.plugin }}
         working-directory: blog
       - name: Run Tests
         run: php artisan test
@@ -79,5 +82,5 @@ jobs:
         run: php artisan test plugins/${{ inputs.plugin }}/tests/Feature
         working-directory: blog
       - name: Deactive plugin
-        run: php artisan plugin:disable ${{ inputs.plugin }}
+        run: php artisan plugin:disable ${{ inputs.vendor }}/${{ inputs.plugin }}
         working-directory: blog
