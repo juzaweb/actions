@@ -49,7 +49,6 @@ jobs:
           coverage: none
       - name: Install composer
         run: composer create-project juzaweb/cms:${{ inputs.cms }} blog
-        working-directory: blog
       - name: Directory Permissions
         run: chmod -R 777 storage bootstrap/cache
         working-directory: blog
