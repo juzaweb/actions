@@ -1,0 +1,1 @@
+# Juzaweb - Default actions
