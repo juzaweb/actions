@@ -43,6 +43,9 @@ jobs:
       - name: Directory Permissions
         run: chmod -R 777 storage bootstrap/cache
         working-directory: blog
+      - name: Update package
+        working-directory: blog
+        run: composer require juzaweb/modules:dev-master juzaweb/dev-tool:dev-master
       - name: Install plugin
         run: composer require ${{ inputs.plugin }}:${{ matrix.version }}
         working-directory: blog
