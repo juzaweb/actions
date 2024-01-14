@@ -1,4 +1,4 @@
-name: Run Plugin phpunit test suite
+name: Run Theme phpunit test suite
 on:
   workflow_call:
     inputs:
@@ -13,9 +13,7 @@ jobs:
         image: mysql:8.0.21
         env:
           MYSQL_ALLOW_EMPTY_PASSWORD: yes
-          MYSQL_DATABASE: laravel
-          MYSQL_USER: root
-          MYSQL_PASSWORD:
+          MYSQL_DATABASE: cms_test
         ports:
           - 3306:3306
         options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
@@ -39,6 +37,8 @@ jobs:
           coverage: none
       - name: Install composer
         run: composer create-project juzaweb/cms blog "${{ matrix.cms }}"
+      - name: Copy .env
+        run: php -r "copy('.env.testing.example', '.env');"
         working-directory: blog
       - name: Directory Permissions
         run: chmod -R 777 storage bootstrap/cache
@@ -46,9 +46,6 @@ jobs:
       - name: Update package
         working-directory: blog
         run: composer require juzaweb/modules:dev-master juzaweb/dev-tool:dev-master
-      - name: Install Example plugin for Testing
-        working-directory: blog
-        run: composer require juzaweb/example:dev-master
       - name: Install plugin
         run: composer require ${{ inputs.plugin }}:${{ matrix.version }}
         working-directory: blog
@@ -66,9 +63,6 @@ jobs:
       - name: Run Plugin Unit Test
         run: php artisan test plugins/${{ inputs.plugin }}/tests/Unit
         working-directory: blog
-      - name: Run Plugin Feature Test
+      - name: Run Plugin Unit Test
         run: php artisan test plugins/${{ inputs.plugin }}/tests/Feature
-        working-directory: blog
-      - name: Deactive plugin
-        run: php artisan plugin:disable ${{ inputs.plugin }}
         working-directory: blog
