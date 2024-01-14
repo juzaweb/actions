@@ -58,29 +58,56 @@ jobs:
       - name: Update package
         working-directory: blog
         run: composer require juzaweb/modules:${{ inputs.module }} juzaweb/dev-tool:dev-master
+        env:
+          LOG_CHANNEL: slack
+          LOG_SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
       - name: Install Example plugin for Testing
         working-directory: blog
         run: composer require juzaweb/example:dev-master
+        env:
+          LOG_CHANNEL: slack
+          LOG_SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
       - name: Install plugin
         run: composer require ${{ inputs.vendor }}/${{ inputs.plugin }}:${{ inputs.version }}
         working-directory: blog
+        env:
+          LOG_CHANNEL: slack
+          LOG_SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
       - name: Config database & Execute tests Install
         run: |
           php artisan test vendor/juzaweb/modules/modules/Tests/InstallTest.php
           composer dump-autoload
         working-directory: blog
+        env:
+          LOG_CHANNEL: slack
+          LOG_SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
       - name: Active plugin
         run: php artisan plugin:enable ${{ inputs.vendor }}/${{ inputs.plugin }}
         working-directory: blog
+        env:
+          LOG_CHANNEL: slack
+          LOG_SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
       - name: Run Tests
         run: php artisan test
         working-directory: blog
+        env:
+          LOG_CHANNEL: slack
+          LOG_SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
       - name: Run Plugin Unit Test
         run: php artisan test plugins/${{ inputs.plugin }}/tests/Unit
         working-directory: blog
+        env:
+          LOG_CHANNEL: slack
+          LOG_SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
       - name: Run Plugin Feature Test
         run: php artisan test plugins/${{ inputs.plugin }}/tests/Feature
         working-directory: blog
+        env:
+          LOG_CHANNEL: slack
+          LOG_SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
       - name: Deactive plugin
         run: php artisan plugin:disable ${{ inputs.vendor }}/${{ inputs.plugin }}
         working-directory: blog
+        env:
+          LOG_CHANNEL: slack
+          LOG_SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
