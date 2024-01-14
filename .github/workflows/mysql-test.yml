@@ -12,7 +12,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     services:
       mysql:
-        image: mysql:8.0.21
+        image: mysql:${{ matrix.mysql }}
         env:
           MYSQL_ALLOW_EMPTY_PASSWORD: yes
           MYSQL_DATABASE: laravel
@@ -27,7 +27,8 @@ jobs:
         os: [ubuntu-latest]
         php: [8.0, 8.1]
         version: [dev-develop]
-    name: PHP${{ matrix.php }} - ${{ matrix.os }}
+        mysql: [5.7.33, 5.7.37, 8.0.21]
+    name: PHP${{ matrix.php }} - ${{ matrix.os }} - MySQL ${{ matrix.mysql }}
 
     steps:
       - name: Setup PHP
